@@ -19,6 +19,7 @@ export default `
        description: String
        speakerName: String
     ): [Talk]!
+    getTalk(id: String!): Talk!
   }
   
   type Mutation {

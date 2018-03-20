@@ -8,6 +8,11 @@ export default {
 
                 return talk
             })
+        },
+        getTalk: async (parent, args, { Talk }) => {
+            const talk = await Talk.findById(args.id);
+
+            return talk;
         }
     },
     Mutation: {
