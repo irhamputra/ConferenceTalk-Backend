@@ -1,7 +1,7 @@
 export default {
     Query: {
         allTalks: async (parent, args, { Talk }) => {
-            const talks = await Talk.find();
+            const talks = await Talk.find(args);
 
             return talks.map(talk => {
                 talk._id = talk._id.toString()
