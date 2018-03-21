@@ -6,7 +6,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 require('dotenv').config();
 
-import types from './schemas/schema';
+import typeDefs from './schemas/schema';
 import Talk from './model/Talk';
 import resolvers from './resolvers/resolvers'
 
@@ -15,7 +15,7 @@ mongoose.connect(
 );
 
 const schema = makeExecutableSchema({
-    typeDefs: types,
+    typeDefs,
     resolvers
 });
 

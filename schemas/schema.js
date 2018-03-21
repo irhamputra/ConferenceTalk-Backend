@@ -23,13 +23,16 @@ export default `
   }
   
   type Mutation {
+  
     createTalk(
-    name: String!,
-    conferenceName: String,
-    video: String!,
-    description: String,
-    speakerName: String!,
-    date: String
+       name: String!,
+       conferenceName: String,
+       video: String!,
+       description: String,
+       speakerName: String!,
+       date: String
     ): Talk!
+    
+    upvoteTalk(id: String!): Talk!
   }
 `;

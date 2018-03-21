@@ -22,6 +22,17 @@ export default {
             talk._id = talk._id.toString();
 
             return talk
+        },
+        upvoteTalk: async (parent, { id }, { Talk }) => {
+            const talk = await Talk.findById(id);
+
+            talk.set({
+                votes: talk.votes ? talk.votes + 1 : 1
+            });
+
+            await talk.save();
+
+            return talk
         }
     }
 };
