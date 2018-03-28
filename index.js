@@ -3,12 +3,17 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
+import { ApolloEngine } from 'apollo-engine';
 
 require('dotenv').config();
 
 import typeDefs from './schemas/schema';
 import Talk from './model/Talk';
 import resolvers from './resolvers/resolvers'
+
+const engine = new ApolloEngine({
+   apiKey: process.env.AE_API_KEY
+});
 
 mongoose.connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds251747.mlab.com:51747/mongodb-graphql-test`
@@ -25,11 +30,21 @@ const app = express();
 app.use(
     '/graphql',
     bodyParser.json(),
-    graphqlExpress({ schema, context: { Talk } })
+    graphqlExpress({
+        schema,
+        context: { Talk },
+
+        // Option
+        tracing: true,
+        cacheControl: true
+    })
 );
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql'}));
 
-app.listen(PORT);
+engine.listen({
+    port: PORT,
+    expressApp: app
+});
 
 console.log(`Server running on http://localhost:${PORT}`);
