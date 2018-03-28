@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
@@ -27,6 +28,10 @@ const schema = makeExecutableSchema({
 const PORT = 3000;
 const app = express();
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/'))
+});
+
 app.use(
     '/graphql',
     bodyParser.json(),
@@ -45,6 +50,4 @@ app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql'}));
 engine.listen({
     port: PORT,
     expressApp: app
-});
-
-console.log(`Server running on http://localhost:${PORT}`);
+}, () => console.log(`Server is running at localhost:${PORT}`));
