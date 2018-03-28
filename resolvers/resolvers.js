@@ -4,7 +4,7 @@ export default {
             const talks = await Talk.find(args);
 
             return talks.map(talk => {
-                talk._id = talk._id.toString()
+                talk._id = talk._id.toString();
 
                 return talk
             })
@@ -31,6 +31,14 @@ export default {
             });
 
             await talk.save();
+
+            return talk
+        },
+
+        deleteTalk: async (parent, { id }, { Talk }) => {
+            const talk = await Talk.remove(id);
+
+            talk._id = talk._id.toString();
 
             return talk
         }

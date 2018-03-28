@@ -22,12 +22,14 @@ const schema = makeExecutableSchema({
 const PORT = 3000;
 const app = express();
 
-app.use('/graphql',
+app.use(
+    '/graphql',
     bodyParser.json(),
-    graphqlExpress({ schema, context: { Talk } }));
+    graphqlExpress({ schema, context: { Talk } })
+);
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql'}));
 
 app.listen(PORT);
 
-console.log('App running on:', PORT);
+console.log(`Server running on http://localhost:${PORT}`);

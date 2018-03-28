@@ -34,5 +34,9 @@ export default `
     ): Talk!
     
     upvoteTalk(id: String!): Talk!
+    
+    downvoteTalk(id: String!): Talk!
+    
+    deleteTalk(id: String!): Talk!
   }
 `;
