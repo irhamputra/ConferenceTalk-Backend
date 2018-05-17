@@ -1,6 +1,6 @@
 import express from 'express';
-import path from 'path';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
@@ -10,11 +10,11 @@ require('dotenv').config();
 
 import typeDefs from './schemas/schema';
 import Talk from './model/Talk';
-import resolvers from './resolvers/resolvers'
+import resolvers from './resolvers/resolvers';
 
-const engine = new ApolloEngine({
-   apiKey: process.env.AE_API_KEY
-});
+if (!process.env.AE_API_KEY) {
+    throw new Error("Please provide the Apollo Engine API_KEY");
+}
 
 mongoose.connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds251747.mlab.com:51747/mongodb-graphql-test`
@@ -25,12 +25,10 @@ const schema = makeExecutableSchema({
     resolvers
 });
 
-const PORT = 3000;
+const PORT = 8080;
 const app = express();
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/'))
-});
+app.use(cors());
 
 app.use(
     '/graphql',
@@ -38,14 +36,14 @@ app.use(
     graphqlExpress({
         schema,
         context: { Talk },
-
-        // Option
-        tracing: true,
-        cacheControl: true
     })
 );
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql'}));
+
+const engine = new ApolloEngine({
+    apiKey: process.env.AE_API_KEY
+});
 
 engine.listen({
     port: PORT,

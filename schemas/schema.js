@@ -38,5 +38,7 @@ export default `
     downvoteTalk(id: String!): Talk!
     
     deleteTalk(id: String!): Talk!
+    
+    updateTalk(id: String!): Talk!
   }
 `;
